@@ -1,30 +1,33 @@
-import { Button, Code, Text, Heading } from '@chakra-ui/core';
+import React from 'react';
 import Head from 'next/head';
+import { Button, Heading, Icon, Flex } from '@chakra-ui/core';
 import { useAuth } from '@/lib/auth';
 
-export default function Home() {
+const HomePage = () => {
   const auth = useAuth();
-
   return (
-    <div>
+    <Flex
+      as="main"
+      direction="column"
+      align="center"
+      justify="center"
+      w="100vw"
+      h="100vh"
+    >
       <Head>
         <title>Feedback.io</title>
       </Head>
 
-      <main>
-        <Heading>Feedback.io</Heading>
+      <Heading>Feedback.io</Heading>
+      <Icon name="logo" color="black" size="64px" />
 
-        <Text>
-          Current user:
-          <Code>{auth.user ? auth.user.name : 'Guest'}</Code>
-        </Text>
-
-        {auth.user ? (
-          <Button onClick={() => auth.signout()}>Sign Out</Button>
-        ) : (
-          <Button onClick={() => auth.signinWithGitHub()}>Sign In</Button>
-        )}
-      </main>
-    </div>
+      {auth.user ? (
+        <Button onClick={() => auth.signout()}>Sign Out</Button>
+      ) : (
+        <Button onClick={() => auth.signinWithGitHub()}>Sign In</Button>
+      )}
+    </Flex>
   );
-}
+};
+
+export default HomePage;
