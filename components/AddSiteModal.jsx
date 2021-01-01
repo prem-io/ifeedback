@@ -21,13 +21,13 @@ import { useAuth } from '@/lib/auth';
 
 const AddSiteModal = ({ children }) => {
   const toast = useToast();
-  const auth = useAuth();
+  const {user} = useAuth();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { register, handleSubmit } = useForm();
 
   const onCreateSite = ({ name, url }) => {
     const newSite = {
-      authorId: auth.user.uid,
+      authorId: user.uid,
       createdAt: new Date().toISOString(),
       name,
       url
@@ -41,7 +41,7 @@ const AddSiteModal = ({ children }) => {
       isClosable: true
     });
     mutate(
-      '/api/sites',
+      ['/api/sites', user.token],
       async (data) => {
         return { sites: [...data.sites, newSite] };
       },

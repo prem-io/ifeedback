@@ -14,7 +14,8 @@ export async function getStaticProps(context) {
   return {
     props: {
       initialFeedback: feedback
-    }
+    },
+    revalidate: 1
   };
 }
 
@@ -33,7 +34,7 @@ export async function getStaticPaths() {
 }
 
 const FeedbackPage = ({ initialFeedback }) => {
-  const auth = useAuth();
+  const { user } = useAuth();
   const router = useRouter();
   const inputEl = useRef(null);
   const [allFeedback, setAllFeedback] = useState(initialFeedback);
@@ -42,12 +43,12 @@ const FeedbackPage = ({ initialFeedback }) => {
     e.preventDefault();
 
     const newFeedback = {
-      author: auth.user.name,
-      authorId: auth.user.uid,
+      author: user.name,
+      authorId: user.uid,
       siteId: router.query.siteId,
       text: inputEl.current.value,
       createdAt: new Date().toISOString(),
-      provider: auth.user.provider,
+      provider: user.provider,
       status: 'pending'
     };
 
@@ -63,7 +64,7 @@ const FeedbackPage = ({ initialFeedback }) => {
       maxWidth="700px"
       margin="0 auto"
     >
-      {auth.user && (
+      {user && (
         <Box as="form" onSubmit={onSubmit}>
           <FormControl my={8}>
             <FormLabel htmlFor="comment">Comment</FormLabel>

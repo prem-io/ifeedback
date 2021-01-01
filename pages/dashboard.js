@@ -8,8 +8,10 @@ import fetcher from '@/utils/fetcher';
 import { useAuth } from '@/lib/auth';
 
 const Dashboard = () => {
-  const auth = useAuth();
-  const { data } = useSWR('/api/sites', fetcher);
+  const { user } = useAuth();
+  const { data } = useSWR(user ? ['/api/sites', user.token] : null, fetcher);
+  console.log('user', user);
+  console.log('site-data', data);
 
   if (!data) {
     return (

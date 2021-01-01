@@ -1,33 +1,64 @@
-import React from 'react';
 import Head from 'next/head';
-import { Button, Heading, Icon, Flex } from '@chakra-ui/core';
+import { Button, Flex, Text, Icon, Link } from '@chakra-ui/core';
+
 import { useAuth } from '@/lib/auth';
 
-const HomePage = () => {
+const Home = () => {
   const auth = useAuth();
+
   return (
     <Flex
       as="main"
       direction="column"
       align="center"
       justify="center"
-      w="100vw"
       h="100vh"
+      maxW="400px"
+      margin="0 auto"
     >
       <Head>
-        <title>Feedback.io</title>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if (document.cookie && document.cookie.includes('ifeedback-auth')) {
+                window.location.href = "/dashboard"
+              }
+            `
+          }}
+        />
+        <title>Fast Feedback</title>
       </Head>
-
-      <Heading>Feedback.io</Heading>
-      <Icon name="logo" color="black" size="64px" />
-
+      <Icon color="black" name="logo" size="42px" mb={2} />
+      <Text mb={4}>
+        <Text as="span" fontWeight="bold" display="inline">
+          Fast Feedback
+        </Text>
+        {' is being built as part of '}
+        <Link
+          href="https://react2025.com"
+          isExternal
+          textDecoration="underline"
+        >
+          React 2025
+        </Link>
+        {`. It's the easiest way to add comments or reviews to your static site. It's still a work-in-progress, but you can try it out by logging in.`}
+      </Text>
       {auth.user ? (
-        <Button onClick={() => auth.signout()}>Sign Out</Button>
+        <Button as="a" size="sm" fontWeight="medium" href="/dashboard">
+          View Dashboard
+        </Button>
       ) : (
-        <Button onClick={() => auth.signinWithGitHub()}>Sign In</Button>
+        <Button
+          mt={4}
+          size="sm"
+          fontWeight="medium"
+          onClick={(e) => auth.signinWithGitHub()}
+        >
+          Sign In
+        </Button>
       )}
     </Flex>
   );
 };
 
-export default HomePage;
+export default Home;
