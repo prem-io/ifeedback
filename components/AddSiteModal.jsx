@@ -37,7 +37,7 @@ const AddSiteModal = ({ children }) => {
       title: 'Success!',
       description: "We've added your site.",
       status: 'success',
-      duration: 5000,
+      duration: 2000,
       isClosable: true
     });
     mutate(
